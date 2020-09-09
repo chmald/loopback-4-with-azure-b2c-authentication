@@ -1,14 +1,16 @@
-import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
+import { BootMixin } from '@loopback/boot';
+import { AuthenticationBindings } from '@loopback/authentication';
+import { ApplicationConfig, CoreTags } from '@loopback/core';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
-import {RepositoryMixin} from '@loopback/repository';
-import {RestApplication} from '@loopback/rest';
-import {ServiceMixin} from '@loopback/service-proxy';
+import { RepositoryMixin } from '@loopback/repository';
+import { RestApplication } from '@loopback/rest';
+import { ServiceMixin } from '@loopback/service-proxy';
 import * as path from 'path';
-import {MySequence} from './sequence';
+import { MySequence } from './sequence';
+import { b2cAuthStrategy } from './b2c.auth.strategy';
 
 export class Chmaldloopback4Application extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -27,6 +29,13 @@ export class Chmaldloopback4Application extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+
+    this.bind('authentication.strategies.b2cAuthStrategy')
+      .to(b2cAuthStrategy)
+      .tag({
+        [CoreTags.EXTENSION_FOR]:
+          AuthenticationBindings.AUTHENTICATION_STRATEGY_EXTENSION_POINT_NAME,
+      })
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
