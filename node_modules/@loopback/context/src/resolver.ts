@@ -4,8 +4,8 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import {DecoratorFactory} from '@loopback/metadata';
-import * as assert from 'assert';
-import * as debugModule from 'debug';
+import assert from 'assert';
+import debugModule from 'debug';
 import {BindingScope} from './binding';
 import {isBindingAddress} from './binding-filter';
 import {BindingAddress} from './binding-key';
@@ -51,7 +51,7 @@ export function instantiateClass<T>(
   /* istanbul ignore if */
   if (debug.enabled) {
     debug('Instantiating %s', getTargetName(ctor));
-    if (nonInjectedArgs && nonInjectedArgs.length) {
+    if (nonInjectedArgs?.length) {
       debug('Non-injected arguments:', nonInjectedArgs);
     }
   }
@@ -93,7 +93,7 @@ function resolveContext(
   injection: Readonly<Injection>,
   session?: ResolutionSession,
 ) {
-  const currentBinding = session && session.currentBinding;
+  const currentBinding = session?.currentBinding;
   if (
     currentBinding == null ||
     currentBinding.scope !== BindingScope.SINGLETON
@@ -201,7 +201,7 @@ export function resolveInjectedArguments(
   // Example value:
   //   [ , 'key1', , 'key2']
   const injectedArgs = describeInjectedArguments(target, method);
-  const extraArgs = nonInjectedArgs || [];
+  const extraArgs = nonInjectedArgs ?? [];
 
   let argLength = DecoratorFactory.getNumberOfParameters(target, method);
 
